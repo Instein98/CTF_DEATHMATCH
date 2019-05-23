@@ -3071,11 +3071,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa5aed3e5b90413429c24b0313ed4046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashCoolTime: 10
+  dashDurTime: 0.4
+  missileCoolTime: 3
+  missileNum: 3
   carBody: {fileID: 54992595718468768}
   FirstT: {fileID: 4983670724649146}
   SecondT: {fileID: 4358711232196436}
   carCamera: {fileID: 20433603125882380}
-  speedUpForce: 1000
+  speedUpForce: 2
   bulletSpeed: 100
   mouseSensitive: 4
   bullet: {fileID: 1801756747033196, guid: cda08deefd806924aa7d4fedaa86e90a, type: 2}
