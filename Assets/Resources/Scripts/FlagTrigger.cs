@@ -33,7 +33,7 @@ public class FlagTrigger : NetworkBehaviour {
 		// 	return;
 
     	if (coll != null && !disabled){
-			if (coll.gameObject.name == "Car(Clone)"){
+			if (coll.gameObject.name.Substring(0, 3) == "Car"){
 				collCar = coll.transform;
 				// Vector3 flagPos = collCar.position + new Vector3(1f, 1.2f, -1.5f);
 				// Quaternion flagRot = collCar.rotation;

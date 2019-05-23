@@ -3100,6 +3100,8 @@ MonoBehaviour:
   flagPrefab: {fileID: 1924724845417178, guid: 51525ff879ccc80489bf13d66e11b13f, type: 2}
   triggerPrefab: {fileID: 1002079854749820, guid: e91a376f2c13dc24783902c50847007c,
     type: 2}
+  homePrefab: {fileID: 1994249073665244, guid: 47a5c1cea7a4d814289edd64f5b77a3a, type: 2}
+  score: 0
 --- !u!114 &114161199983222862
 MonoBehaviour:
   m_ObjectHideFlags: 1

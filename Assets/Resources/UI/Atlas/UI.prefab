@@ -54,7 +54,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 1e4e0175f52b7b443ac17dc1ff6e0d31, type: 2}
   mSprites:
   - name: dash
-    x: 0
+    x: 513
     y: 512
     width: 512
     height: 512
@@ -67,10 +67,23 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: missile
-    x: 513
+    x: 0
     y: 512
     width: 512
     height: 512
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: ScoreBoard
+    x: 0
+    y: 261
+    width: 500
+    height: 250
     borderLeft: 0
     borderRight: 0
     borderTop: 0
