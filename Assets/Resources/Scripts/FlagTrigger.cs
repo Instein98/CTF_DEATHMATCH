@@ -37,6 +37,9 @@ public class FlagTrigger : NetworkBehaviour {
 				collCar = coll.transform;
 				// Vector3 flagPos = collCar.position + new Vector3(1f, 1.2f, -1.5f);
 				// Quaternion flagRot = collCar.rotation;
+				if (collCar.GetComponent<CarFlagControl>() == null){
+					return;
+				}
 				collCar.GetComponent<CarFlagControl>().getFlag();
 				// CmdCarry(flagPos, flagRot);
 			}

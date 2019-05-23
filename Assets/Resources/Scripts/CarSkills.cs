@@ -10,7 +10,7 @@ public class CarSkills : NetworkBehaviour {
 	public float missileCoolTime = 3;
 	public int missileNum = 3;
 	private float dashLeftTime;  
-	private bool dash = false;
+	public bool dash = false;
 	private bool missile = false;
 	private GameObject UIRoot;
 	private UISprite spriteDash;
@@ -33,6 +33,9 @@ public class CarSkills : NetworkBehaviour {
 	public override void OnStartLocalPlayer(){
 		carCamera = transform.Find("CarCamera").GetComponent<Camera>();
 		carCamera.gameObject.SetActive(true);
+		if (!isServer){
+			CmdStartGame(); 
+		}
 	}
 
 	void Start () {
@@ -43,9 +46,6 @@ public class CarSkills : NetworkBehaviour {
 			spriteDash = UIRoot.transform.Find("Anchor_RB/Dash").GetComponent<UISprite>();
 			spriteMissile = UIRoot.transform.Find("Anchor_RB/Missile").GetComponent<UISprite>();
 			labelMissile = spriteMissile.transform.Find("LabelMissile").GetComponent<UILabel>();
-			Debug.Log("spriteDash = "+spriteDash);
-			Debug.Log("spriteMissile = "+spriteMissile);
-			Debug.Log("labelMissile = "+labelMissile);
 		}
 	}
 
@@ -65,12 +65,17 @@ public class CarSkills : NetworkBehaviour {
 
 	[Command]
 	private void CmdFire(Vector3 pos, Quaternion rot){
-		// Debug.Log("Fire!!!!!!!!!!!");
 		GameObject b = Instantiate(bullet, pos, rot);
 		// b.transform.rotation = carCamera.transform.rotation;
 		b.GetComponent<Rigidbody>().velocity = b.transform.forward * bulletSpeed;
 		NetworkServer.Spawn(b);
 		Destroy(b, 5);
+	}
+
+	[Command]
+	void CmdStartGame(){
+		GameObject g = GameObject.Find("Global");
+		g.GetComponent<GlobalControl>().hasStart = true;
 	}
 
 	// mouse right button to speed up, left and right to fire.
@@ -110,7 +115,6 @@ public class CarSkills : NetworkBehaviour {
 		// }
 
 		if (dash){
-			Debug.Log("Dashing!");
 			carBody.AddForce(speedUpForce * orientation, ForceMode.VelocityChange);
 			dashLeftTime -= deltaT;
 			if (dashLeftTime <= 0){

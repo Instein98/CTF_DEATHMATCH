@@ -25,8 +25,6 @@ public class CarFlagControl : NetworkBehaviour {
 	void Start(){
 		UIRoot = GameObject.Find("UI Root");
 		if (UIRoot != null){
-			UIRoot.SetActive(false);
-			UIRoot.SetActive(true);
 			Mscore = UIRoot.transform.Find("Anchor_T/ScoreBoard/MyScore").GetComponent<UILabel>();
 			Escore = UIRoot.transform.Find("Anchor_T/ScoreBoard/EnemyScore").GetComponent<UILabel>();
 		}
@@ -40,7 +38,11 @@ public class CarFlagControl : NetworkBehaviour {
 		updateScoreBoard();
 		if (!isLocalPlayer)
             return;
-		deltaV = (lastV - GetComponent<Rigidbody>().velocity).magnitude;
+		if (GetComponent<CarSkills>().dash){
+			deltaV = 0;
+		}else{
+			deltaV = (lastV - GetComponent<Rigidbody>().velocity).magnitude;
+		}
 		flyFlag();
 		lastV = GetComponent<Rigidbody>().velocity;
 	}
@@ -185,10 +187,6 @@ public class CarFlagControl : NetworkBehaviour {
 
 	[ClientRpc]
 	void RpcFlagDrop(GameObject trigger){
-		// Debug.Log("(RpcFlagDrop) isServer? = "+isServer);
-		// Debug.Log("(RpcFlagDrop) isLocalPlayer? = "+isLocalPlayer);
-		// if (!isLocalPlayer)
-		// 	return;
 		trigger.GetComponent<FlagTrigger>().disable();
 	}
 
