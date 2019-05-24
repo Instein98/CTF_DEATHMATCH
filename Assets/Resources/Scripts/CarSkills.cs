@@ -34,7 +34,7 @@ public class CarSkills : NetworkBehaviour {
 	private float mouseX = 0;
 	private float mouseY = 0;
 	private Vector3 orientation;
-	private Vector3 iniPos;
+	private Vector3 iniPos;  // initial 
 	private Quaternion iniRot;
 
 	public override void OnStartLocalPlayer(){
@@ -44,7 +44,7 @@ public class CarSkills : NetworkBehaviour {
 	void Start () {
 		iniPos = transform.position;
 		iniPos = new Vector3(iniPos.x, 2.06f, iniPos.z);
-		// iniRot = transform.rotation;
+		iniRot = transform.rotation;
 		UIRoot = GameObject.Find("UI Root");
 		if (UIRoot != null){
 			UIRoot.SetActive(false);
@@ -109,6 +109,7 @@ public class CarSkills : NetworkBehaviour {
 	[ClientRpc]
 	public void RpcStartGame(GameObject global){
 		global.GetComponent<GlobalControl>().startGame();
+		GameObject.Find("UI Root/wait").SetActive(false);
 	}
 
 	// mouse right button to speed up, left and right to fire.

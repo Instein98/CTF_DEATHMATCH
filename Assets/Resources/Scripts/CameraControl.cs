@@ -11,8 +11,6 @@ public class CameraControl : MonoBehaviour {
 	private bool gameStart = false;
 	private bool transToCar = false;
 	private Vector3 position;
-	// public GlobalControl gc;
-	// public GameObject carCamPoint;
 
 	// Use this for initialization
 	void Start () {
@@ -38,6 +36,7 @@ public class CameraControl : MonoBehaviour {
 			position.z = Mathf.Lerp(position.z, carCP.position.z, Time.deltaTime*t);
         	transform.position = position;
 			if ((int)position.x == (int)carCP.position.x){
+				OutCarCamCenter.transform.rotation = car.GetComponent<CarSkills>().carCamCenterPoint.transform.rotation;
 				transToCar = false;
 				transform.rotation = carCP.rotation;
 				transform.parent = OutCarCamCenter.transform;
