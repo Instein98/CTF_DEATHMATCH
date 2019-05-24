@@ -15,30 +15,36 @@ public class CarSkills : NetworkBehaviour {
 	private GameObject UIRoot;
 	private UISprite spriteDash;
 	private UISprite spriteMissile;
+	private UISprite spriteScope;
 	private UILabel labelMissile; 
 	public Rigidbody carBody;
 	public Transform FirstT;  // first - second = the car's orientation.
 	public Transform SecondT;
 	// public Camera mainCamera;
-	public Camera carCamera;
+	public GameObject carCamera;
 	public float speedUpForce;
 	public float bulletSpeed;
 	public float mouseSensitive = 0;
 	public GameObject bullet;
+	public Transform carCamPoint;
+	public GameObject carCamCenterPoint;
+	private Transform OutCarCamCenter;
+	// private Transform 
 	private bool speedUp = false;
 	private float mouseX = 0;
 	private float mouseY = 0;
 	private Vector3 orientation;
+	private Vector3 iniPos;
+	private Quaternion iniRot;
 
 	public override void OnStartLocalPlayer(){
-		carCamera = transform.Find("CarCamera").GetComponent<Camera>();
-		carCamera.gameObject.SetActive(true);
-		if (!isServer){
-			CmdStartGame(); 
-		}
+		
 	}
 
 	void Start () {
+		iniPos = transform.position;
+		iniPos = new Vector3(iniPos.x, 2.06f, iniPos.z);
+		// iniRot = transform.rotation;
 		UIRoot = GameObject.Find("UI Root");
 		if (UIRoot != null){
 			UIRoot.SetActive(false);
@@ -46,18 +52,40 @@ public class CarSkills : NetworkBehaviour {
 			spriteDash = UIRoot.transform.Find("Anchor_RB/Dash").GetComponent<UISprite>();
 			spriteMissile = UIRoot.transform.Find("Anchor_RB/Missile").GetComponent<UISprite>();
 			labelMissile = spriteMissile.transform.Find("LabelMissile").GetComponent<UILabel>();
+			spriteScope = UIRoot.transform.Find("scope").GetComponent<UISprite>();
+			spriteScope.gameObject.SetActive(false);
+		}
+
+		if(isLocalPlayer){
+			OutCarCamCenter = GameObject.Find("OutCarCamCenter").transform;
+			OutCarCamCenter.transform.rotation = carCamCenterPoint.transform.rotation;
+			OutCarCamCenter.transform.position = carCamCenterPoint.transform.position;
+			carCamera = GameObject.Find("Camera");
+			// Debug.Log("carCamera: "+carCamera);
+			// Debug.Log("CameraControl: "+carCamera.GetComponent<CameraControl>());
+			carCamera.GetComponent<CameraControl>().car = gameObject;
+			carCamera.GetComponent<CameraControl>().initCam(carCamPoint.position, carCamPoint.rotation);
+			if (!isServer){
+				CmdStartGame(); 
+			}
 		}
 	}
 
 	 void Update(){
 		if (!isLocalPlayer)
 			return;
+		OutCarCamCenter.transform.position = carCamCenterPoint.transform.position;
+		if (!GameObject.Find("Global").GetComponent<GlobalControl>().hasStart){
+			transform.position = iniPos;
+			// transform.rotation = iniRot;
+			return;
+		}
 		float axisX = Input.GetAxis("Mouse X");
 		float axisY = Input.GetAxis("Mouse Y");
 		mouseX += axisX;
 		mouseY += axisY;
 		Quaternion q = Quaternion.Euler(-mouseY * mouseSensitive, mouseX * mouseSensitive, 0);
-		carCamera.transform.localRotation = q;
+		OutCarCamCenter.transform.localRotation = q;
 		float t = Time.deltaTime;
 		callSkills(t);
 		skillsCoolDown(t);
@@ -66,8 +94,8 @@ public class CarSkills : NetworkBehaviour {
 	[Command]
 	private void CmdFire(Vector3 pos, Quaternion rot){
 		GameObject b = Instantiate(bullet, pos, rot);
-		// b.transform.rotation = carCamera.transform.rotation;
 		b.GetComponent<Rigidbody>().velocity = b.transform.forward * bulletSpeed;
+		b.transform.Rotate(90, 0, 0, Space.Self);
 		NetworkServer.Spawn(b);
 		Destroy(b, 5);
 	}
@@ -75,7 +103,12 @@ public class CarSkills : NetworkBehaviour {
 	[Command]
 	void CmdStartGame(){
 		GameObject g = GameObject.Find("Global");
-		g.GetComponent<GlobalControl>().hasStart = true;
+		RpcStartGame(g);
+	}
+
+	[ClientRpc]
+	public void RpcStartGame(GameObject global){
+		global.GetComponent<GlobalControl>().startGame();
 	}
 
 	// mouse right button to speed up, left and right to fire.
@@ -85,10 +118,12 @@ public class CarSkills : NetworkBehaviour {
 
 		if (Input.GetMouseButtonDown(1)){
 			missile = true;
-			carCamera.fieldOfView /= 2;
+			spriteScope.gameObject.SetActive(true);
+			carCamera.GetComponent<Camera>().fieldOfView /= 2;
 		}else if (Input.GetMouseButtonUp(1)){
 			missile = false;
-			carCamera.fieldOfView *= 2;
+			spriteScope.gameObject.SetActive(false);
+			carCamera.GetComponent<Camera>().fieldOfView *= 2;
 		}
 
 		if (Input.GetMouseButtonDown(0)){

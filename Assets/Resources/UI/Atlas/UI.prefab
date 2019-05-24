@@ -53,9 +53,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 1e4e0175f52b7b443ac17dc1ff6e0d31, type: 2}
   mSprites:
+  - name: back 1
+    x: 0
+    y: 250
+    width: 500
+    height: 662
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
   - name: dash
-    x: 513
-    y: 512
+    x: 1014
+    y: 400
     width: 512
     height: 512
     borderLeft: 0
@@ -67,8 +80,8 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: missile
-    x: 0
-    y: 512
+    x: 501
+    y: 400
     width: 512
     height: 512
     borderLeft: 0
@@ -79,9 +92,22 @@ MonoBehaviour:
     paddingRight: 0
     paddingTop: 0
     paddingBottom: 0
-  - name: ScoreBoard
+  - name: scope
     x: 0
-    y: 261
+    y: 913
+    width: 2048
+    height: 1135
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: ScoreBoard
+    x: 1527
+    y: 662
     width: 500
     height: 250
     borderLeft: 0

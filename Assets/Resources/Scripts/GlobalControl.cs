@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 public class GlobalControl : NetworkBehaviour {
 	public int gameMinutes = 5;
 	public float gameLeftSeconds;
+	public CameraControl cc;
 	private GameObject UIRoot;
 	private UILabel labelMin;
 	private UILabel labelSec;
@@ -73,6 +74,11 @@ public class GlobalControl : NetworkBehaviour {
 	void CmdGameTime(float t){
 		gameLeftSeconds -= t;
 		showTime();
+	}
+
+	public void startGame(){
+		cc.gameStartCam();
+		hasStart = true;
 	}
 
 }
