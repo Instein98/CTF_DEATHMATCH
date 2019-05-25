@@ -20,7 +20,7 @@ public class FlagCarry : NetworkBehaviour {
 
 	void OnCollisionEnter(Collision collisionInfo){
 		if (!onCar  && collisionInfo.collider.gameObject.name == "Platform"){
-			car.GetComponent<CarFlagControl>().dropFlag();
+			car.GetComponent<CarFlagControl>().dropFlag(false);
 		}
 	}
 

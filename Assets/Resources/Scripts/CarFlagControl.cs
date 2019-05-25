@@ -61,11 +61,11 @@ public class CarFlagControl : NetworkBehaviour {
 		}
 	}
 
-	public void dropFlag(){
+	public void dropFlag(bool inOcean){
 		if (!isLocalPlayer){
 			return;
 		}
-		CmdFlagDrop(flag.gameObject);
+		CmdFlagDrop(flag.gameObject, inOcean);
 	}
 
 	public void getPoint(){
@@ -172,10 +172,14 @@ public class CarFlagControl : NetworkBehaviour {
 	}
 
 	[Command]
-	void CmdFlagDrop(GameObject flag){
+	void CmdFlagDrop(GameObject flag, bool inOcean){
 		if (flag == null)
 			return;
-		Vector3 ftPos = new Vector3(flag.transform.position.x, 5.16f, flag.transform.position.z);
+		Vector3 ftPos;
+		if (inOcean)
+			ftPos = new Vector3(0, 5.16f, 0);
+		else
+			ftPos = new Vector3(flag.transform.position.x, 5.16f, flag.transform.position.z);
 		Quaternion rot = Quaternion.Euler(0, 0, 0);
 		GameObject ft = Instantiate(triggerPrefab, ftPos, rot);
 		ft.transform.GetComponent<FlagTrigger>().disabled = true;

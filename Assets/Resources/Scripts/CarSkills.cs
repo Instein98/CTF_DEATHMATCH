@@ -108,6 +108,10 @@ public class CarSkills : NetworkBehaviour {
 
 	[ClientRpc]
 	public void RpcStartGame(GameObject global){
+		GameObject nd = GameObject.Find("NetworkDiscovery");
+		if (nd != null){
+			nd.GetComponent<MyDiscovery>().StopBroadcast();
+		}
 		global.GetComponent<GlobalControl>().startGame();
 		GameObject.Find("UI Root/wait").SetActive(false);
 	}
@@ -173,5 +177,17 @@ public class CarSkills : NetworkBehaviour {
 				}
 			} 
 		}
+	}
+
+	public void resetCarPosition(){
+		if (!isLocalPlayer)
+			return;
+		if (GetComponent<CarFlagControl>().carryFlag){
+			GetComponent<CarFlagControl>().carryFlag = false;
+			GetComponent<CarFlagControl>().dropFlag(true);
+		}
+		GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+		transform.position = new Vector3(iniPos.x, iniPos.y + 30, iniPos.z);
+		transform.rotation = iniRot;
 	}
 }
