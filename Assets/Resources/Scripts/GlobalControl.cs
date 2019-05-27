@@ -15,7 +15,7 @@ public class GlobalControl : NetworkBehaviour {
 	
 	private UILabel Mscore;
 	private UILabel Escore;
-	private UIButton BackToLobby;
+	// private UIButton BackToLobby;
 	private int Min;
 	private int Sec;
 	[SyncVar]
@@ -23,6 +23,8 @@ public class GlobalControl : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		// MyDiscovery m = GameObject.Find("NetworkDiscovery").GetComponent<MyDiscovery>();
+		// m.StopBroadcast();
 		gameLeftSeconds = gameMinutes * 60;
 		UIRoot = GameObject.Find("UI Root");
 		if (UIRoot != null){
@@ -33,7 +35,7 @@ public class GlobalControl : NetworkBehaviour {
 			labelDraw = UIRoot.transform.Find("draw").GetComponent<UILabel>();
 			Mscore = UIRoot.transform.Find("Anchor_T/ScoreBoard/MyScore").GetComponent<UILabel>();
 			Escore = UIRoot.transform.Find("Anchor_T/ScoreBoard/EnemyScore").GetComponent<UILabel>();
-			BackToLobby = UIRoot.transform.Find("lobbyButton").GetComponent<UIButton>();
+			// BackToLobby = UIRoot.transform.Find("lobbyButton").GetComponent<UIButton>();
 		}
 		showTime();
 	}
@@ -70,10 +72,8 @@ public class GlobalControl : NetworkBehaviour {
 		}else{
 			labelDraw.gameObject.SetActive(true);
 		}
-		BackToLobby.gameObject.SetActive(true);
+		// BackToLobby.gameObject.SetActive(true);
 		Time.timeScale = 0;
-		
-
 	}
 	void CmdGameTime(float t){
 		gameLeftSeconds -= t;
